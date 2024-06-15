@@ -15,12 +15,12 @@
 
 import * as runtime from '../runtime';
 import type {
-    Flow,
-    FlowCreateRequest,
-    FlowModificationRequest,
-    FlowPatchRequest,
-    FlowRunRequest,
-    FlowRunResponse,
+  Flow,
+  FlowCreateRequest,
+  FlowModificationRequest,
+  FlowPatchRequest,
+  FlowRunRequest,
+  FlowRunResponse,
 } from '../models/index';
 import {
     FlowFromJSON,
@@ -367,7 +367,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * List workflows
      */
-    async listWorkflowsRaw(requestParameters: ListWorkflowsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async listWorkflowsRaw(requestParameters: ListWorkflowsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Flow>>> {
         const queryParameters: any = {};
 
         if (requestParameters['filter'] != null) {
@@ -388,14 +388,15 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(FlowFromJSON));
     }
 
     /**
      * List workflows
      */
-    async listWorkflows(requestParameters: ListWorkflowsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.listWorkflowsRaw(requestParameters, initOverrides);
+    async listWorkflows(requestParameters: ListWorkflowsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Flow>> {
+        const response = await this.listWorkflowsRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

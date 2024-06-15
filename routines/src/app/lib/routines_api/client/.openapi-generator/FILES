@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
@@ -7,7 +6,6 @@ models/FlowCreateRequest.ts
 models/FlowCreateRequestParameters.ts
 models/FlowModificationRequest.ts
 models/FlowModificationRequestParameters.ts
-models/FlowParameters.ts
 models/FlowPatchRequest.ts
 models/FlowPatchRequestParameters.ts
 models/FlowRunRequest.ts

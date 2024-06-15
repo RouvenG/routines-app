@@ -5,7 +5,6 @@ export * from './FlowCreateRequest';
 export * from './FlowCreateRequestParameters';
 export * from './FlowModificationRequest';
 export * from './FlowModificationRequestParameters';
-export * from './FlowParameters';
 export * from './FlowPatchRequest';
 export * from './FlowPatchRequestParameters';
 export * from './FlowRunRequest';

@@ -37,4 +37,4 @@ next-env.d.ts
 
 #next.js
 routines/.next
-
+routines/coverage/** 
