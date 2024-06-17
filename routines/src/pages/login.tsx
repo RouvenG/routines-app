@@ -1,10 +1,9 @@
 'use client';
 import { useState } from "react";
-import loginService from "./services/login_service";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from "next/navigation";
-import { log } from "console";
+import loginService from "@/features/login/services/login_service";
 
 
 export default function LoginView() {
@@ -17,16 +16,17 @@ export default function LoginView() {
 
     loginService.auth.authStateReady().then(() => {
         if (loginService.auth.currentUser) {
-            router.push('/');
+            router.push('/routines');
         }
     });
 
     const handleLogin = async () => {
         try {
+            console.log("Logging in with email:", email);
             await loginService.login(email, password);
-            router.push('/'); // Redirect to home page on successful login
+            router.push('/routines');
         } catch (error) {
-            // Handle login error (e.g., show an error message)
+
             console.error("Login failed:", error);
         }
     };
@@ -34,14 +34,13 @@ export default function LoginView() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <div className="flex h-screen w-screen">
-
-                <div className="flex-1 flex items-center justify-center"> {/* This div is for the right half */}
+                <div className="flex-1 flex items-center justify-center">
                     <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
                         <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-16">
                             <h3 className="text-xl font-semibold">Welcome at Routines </h3>
                             <p className="text-sm text-gray-500">Use your email and password to sign in</p>
                         </div>
-                        <form className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16">
+                        <div className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16">
                             <div>
                                 <label htmlFor="email" className="block text-xs text-gray-600 uppercase">Email Address</label>
                                 <input id="email" placeholder="" onChange={(e) => setEmail(e.target.value)} autoComplete="email" className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm" type="email" name="email" />
@@ -55,9 +54,8 @@ export default function LoginView() {
                                     </button>
                                 </div>
                             </div>
-                            <button type="submit" formAction={handleLogin} className="flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none">Sign in<span className="sr-only" aria-live="polite" role="status">Submit form</span></button>
-
-                        </form>
+                            <button type="submit" onClick={handleLogin} className="flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none ">Sign in<span className="sr-only" aria-live="polite" role="status">Submit form</span></button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -2,17 +2,18 @@
 import { initializeApp } from "firebase/app";
 import { Auth, browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
 
+
 class LoginService {
     auth: Auth;
 
     constructor() {
         const config = {
-            apiKey: "AIzaSyDKmI2cdI_Le0FK6tJFwufzAcuIKh7gVuk",
-            authDomain: "jural-406217.firebaseapp.com",
+            apiKey: process.env.FIREBASE_API_KEY,
+            authDomain: process.env.FIREBASE_AUTH_DOMAIN,
         };
         const app = initializeApp(config);
         this.auth = getAuth();
-        
+
         setPersistence(this.auth, browserSessionPersistence)
     }
 

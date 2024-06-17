@@ -9,7 +9,7 @@ function getRoutinesAPI(current_user: User): DefaultApi {
 
     const config = new Configuration({
         accessToken: async () => { return "Bearer " + await current_user.getIdToken() },
-        basePath: "https://api.routines-app.com"
+        basePath: process.env.ROUTINES_HOST
     })
     return new DefaultApi(config);
 }
