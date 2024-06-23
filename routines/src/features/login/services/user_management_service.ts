@@ -1,9 +1,10 @@
 'use client';
 import { initializeApp } from "firebase/app";
-import { Auth, browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
+import { Auth, browserSessionPersistence, getAuth, setPersistence, signInWithEmailAndPassword, User } from "firebase/auth";
+import router from "next/router";
 
 
-class LoginService {
+class UserManagementService {
     auth: Auth;
 
     constructor() {
@@ -13,7 +14,6 @@ class LoginService {
         };
         const app = initializeApp(config);
         this.auth = getAuth();
-
         setPersistence(this.auth, browserSessionPersistence)
     }
 
@@ -30,7 +30,19 @@ class LoginService {
             throw error;
         }
     }
+
+    async getCurrentUser(): Promise<User | null> {
+        await this.auth.authStateReady();
+        const currentUser = this.auth.currentUser;
+        if (currentUser === null) {
+            router.push('/login');
+            return null;
+        } else {
+            return currentUser;
+        }
+    }
+
 }
 
-const loginService = new LoginService();
-export default loginService;
+const userManagementService = new UserManagementService();
+export default userManagementService;

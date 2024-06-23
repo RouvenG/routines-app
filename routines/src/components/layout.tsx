@@ -1,14 +1,16 @@
-import Navbar from "./navbar";
+import { ReactNode } from "react";
+import Sidebar from "./sidebar";
+import Navbar from "./sidebar";
 
 
 
 
-export default function Layout({ children }) {
+export default function Layout({ children }: { children: ReactNode }) {
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <main className="flex min-h-screen min-w-full">
+            <Sidebar>
+            </Sidebar>
+            <main className="p-10 grow">{children}</main> {/* Main content area */}
+        </main>);
 
-            <main>{children}</main>
-
-        </main>
-    )
 }
