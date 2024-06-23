@@ -3,30 +3,39 @@ import { useState } from "react";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from "next/navigation";
-import loginService from "@/features/login/services/login_service";
+import userManagementService from "@/features/login/services/user_management_service";
 
 
 export default function LoginView() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const [showPassword, setShowPassword] = useState(false);
-
     const router = useRouter();
 
-    loginService.auth.authStateReady().then(() => {
-        if (loginService.auth.currentUser) {
-            router.push('/routines');
-        }
+    userManagementService.auth.authStateReady().then(() => {
+        userManagementService.isLoggedIn().then((isLoggedIn) => {
+            if (isLoggedIn) {
+                if (document.referrer.includes(window.location.host)) {
+                    router.back();
+                } else {
+                    router.push('/routines');
+                }
+            }
+        });
+
     });
 
     const handleLogin = async () => {
         try {
             console.log("Logging in with email:", email);
-            await loginService.login(email, password);
-            router.push('/routines');
+            await userManagementService.login(email, password);
+            if (document.referrer.includes(window.location.host)) {
+                router.back();
+            } else {
+                // No referrer from the same site or no history, navigate to a default route
+                router.push('/routines'); // Change '/routines' to your desired default route
+            }
         } catch (error) {
-
             console.error("Login failed:", error);
         }
     };
